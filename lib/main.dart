@@ -9,7 +9,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Pavium',
       theme: _themeData(),
-      home: Home(),
+      home: HomePage(),
     );
   }
 

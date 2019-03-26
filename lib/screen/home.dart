@@ -4,20 +4,20 @@ import 'package:prunusavium/screen/favorite.dart';
 import 'package:prunusavium/screen/rank.dart';
 import 'package:prunusavium/screen/search.dart';
 
-class Home extends StatefulWidget {
+class HomePage extends StatefulWidget {
   @override
-  _HomeState createState() => _HomeState();
+  _HomePageState createState() => _HomePageState();
 }
 
-class _HomeState extends State<Home> {
+// https://stackoverflow.com/questions/52598900/flutter-bottomnavigationbar-rebuilds-page-on-change-of-tab
+class _HomePageState extends State<HomePage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
-  PageController _pageController = PageController();
-  int _tabIndex = 0;
+  int _index = 0;
+  List<Widget> pages = List<Widget>();
 
   @override
-  void dispose() {
-    super.dispose();
-    _pageController.dispose();
+  void initState() {
+    pages..add(FavoritePage())..add(SearchPage())..add(RankPage());
   }
 
   @override
@@ -37,19 +37,14 @@ class _HomeState extends State<Home> {
         icon: Icon(Icons.portrait, size: 30.0),
         onPressed: () => _scaffoldKey.currentState.openDrawer(),
       ),
-      title: Text(_tabs[_tabIndex].title),
+      title: Text(_tabs[_index].title),
     );
   }
 
-  PageView _buildBody() {
-    return PageView(
-      controller: _pageController,
-      onPageChanged: _onPageChanged,
-      children: <Widget>[
-        Favorite(),
-        Search(),
-        Rank(),
-      ],
+  Widget _buildBody() {
+    return IndexedStack(
+      index: _index,
+      children: pages,
     );
   }
 
@@ -102,7 +97,7 @@ class _HomeState extends State<Home> {
     if (Theme.of(context).platform == TargetPlatform.iOS) {
       return CupertinoTabBar(
         activeColor: Theme.of(context).primaryColor,
-        currentIndex: _tabIndex,
+        currentIndex: _index,
         onTap: _onTap,
         items: _tabs.map((tab) {
           return BottomNavigationBarItem(
@@ -113,7 +108,7 @@ class _HomeState extends State<Home> {
       );
     }
     return BottomNavigationBar(
-      currentIndex: _tabIndex,
+      currentIndex: _index,
       onTap: _onTap,
       items: _tabs.map((tab) {
         return BottomNavigationBarItem(
@@ -124,21 +119,18 @@ class _HomeState extends State<Home> {
     );
   }
 
-  void _onPageChanged(int idx) {
-    setState(() {
-      this._tabIndex = idx;
-    });
-  }
-
   void _onTap(int idx) {
-    _pageController.jumpToPage(idx);
+    setState(() {
+      this._index = idx;
+    });
   }
 }
 
 class _Tab {
-  const _Tab({this.title, this.icon});
   final String title;
   final IconData icon;
+
+  const _Tab({this.title, this.icon});
 }
 
 const List<_Tab> _tabs = const <_Tab>[
