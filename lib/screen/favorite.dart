@@ -7,22 +7,23 @@ import 'package:prunusavium/store/favorite.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 class FavoritePage extends StatefulWidget {
+  final FavoriteStore store;
+
+  FavoritePage(this.store);
+
   _FavoritePageState createState() => _FavoritePageState();
 }
 
 class _FavoritePageState extends State<FavoritePage> {
-  final FavoriteStore favStore = FavoriteStore();
-
   void initState() {
     super.initState();
-    this.favStore.loadFavorites();
+    widget.store.loadFavorites();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: FavoriteListView(favStore),
-      floatingActionButton: FAB(favStore),
+      body: FavoriteListView(widget.store),
     );
   }
 }
@@ -113,23 +114,4 @@ class FavoriteListView extends StatelessWidget {
       itemBuilder: __itemBuilder,
     );
   }
-}
-
-class FAB extends StatelessWidget {
-  final FavoriteStore store;
-
-  const FAB(this.store);
-
-  @override
-  Widget build(BuildContext context) => Observer(
-        builder: (_) => FloatingActionButton(
-              child: store.fetchFavsFuture.status == FutureStatus.pending
-                  ? const LinearProgressIndicator()
-                  : Icon(Icons.refresh),
-              onPressed: () {
-                store.checkFavritesUpdate();
-              },
-              mini: true,
-            ),
-      );
 }

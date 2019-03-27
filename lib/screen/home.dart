@@ -3,21 +3,25 @@ import 'package:flutter/material.dart';
 import 'package:prunusavium/screen/favorite.dart';
 import 'package:prunusavium/screen/rank.dart';
 import 'package:prunusavium/screen/search.dart';
+import 'package:prunusavium/store/favorite.dart';
+
+FavoriteStore favStore = FavoriteStore();
 
 class HomePage extends StatefulWidget {
   @override
   _HomePageState createState() => _HomePageState();
 }
 
-// https://stackoverflow.com/questions/52598900/flutter-bottomnavigationbar-rebuilds-page-on-change-of-tab
 class _HomePageState extends State<HomePage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   int _index = 0;
   List<Widget> pages = List<Widget>();
+  List<String> titles = ["收藏", "排行"];
 
   @override
   void initState() {
-    pages..add(FavoritePage())..add(SearchPage())..add(RankPage());
+    super.initState();
+    pages..add(FavoritePage(favStore))..add(RankPage());
   }
 
   @override
@@ -28,6 +32,14 @@ class _HomePageState extends State<HomePage> {
       body: _buildBody(),
       drawer: _buildDrawer(),
       bottomNavigationBar: _buildBNB(),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButton: FloatingActionButton(
+        child: const Icon(Icons.add),
+        mini: true,
+        onPressed: () {
+          // showSearch()
+        },
+      ),
     );
   }
 
@@ -37,7 +49,7 @@ class _HomePageState extends State<HomePage> {
         icon: Icon(Icons.portrait, size: 30.0),
         onPressed: () => _scaffoldKey.currentState.openDrawer(),
       ),
-      title: Text(_tabs[_index].title),
+      title: Text(titles[_index]),
     );
   }
 
@@ -94,47 +106,35 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _buildBNB() {
-    if (Theme.of(context).platform == TargetPlatform.iOS) {
-      return CupertinoTabBar(
-        activeColor: Theme.of(context).primaryColor,
-        currentIndex: _index,
-        onTap: _onTap,
-        items: _tabs.map((tab) {
-          return BottomNavigationBarItem(
-            title: Text(tab.title),
-            icon: Icon(tab.icon),
-          );
-        }).toList(),
-      );
-    }
-    return BottomNavigationBar(
-      currentIndex: _index,
-      onTap: _onTap,
-      items: _tabs.map((tab) {
-        return BottomNavigationBarItem(
-          title: Text(tab.title),
-          icon: Icon(tab.icon),
-        );
-      }).toList(),
+    return BottomAppBar(
+      color: Theme.of(context).backgroundColor,
+      shape: CircularNotchedRectangle(),
+      notchMargin: 1.0,
+      child: new Row(
+        mainAxisSize: MainAxisSize.max,
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: <Widget>[
+          GestureDetector(
+            child: Icon(Icons.favorite_border),
+            onTap: () {
+              setState(() {
+                _index = 0;
+              });
+            },
+            onDoubleTap: () {
+              favStore.checkFavritesUpdate();
+            },
+          ),
+          IconButton(
+            icon: Icon(Icons.library_books),
+            onPressed: () {
+              setState(() {
+                _index = 1;
+              });
+            },
+          ),
+        ],
+      ),
     );
   }
-
-  void _onTap(int idx) {
-    setState(() {
-      this._index = idx;
-    });
-  }
 }
-
-class _Tab {
-  final String title;
-  final IconData icon;
-
-  const _Tab({this.title, this.icon});
-}
-
-const List<_Tab> _tabs = const <_Tab>[
-  _Tab(title: '收藏', icon: Icons.favorite_border),
-  _Tab(title: '搜索', icon: Icons.search),
-  _Tab(title: '排行', icon: Icons.library_books),
-];
