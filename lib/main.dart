@@ -13,10 +13,11 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     print('environment: ${env.name}');
     print('endpoint: ${env.endpoint}');
+
     return MaterialApp(
       title: 'Pavium',
       theme: _themeData(),
-      home: HomePage(),
+      home: HomePage(env),
     );
   }
 
