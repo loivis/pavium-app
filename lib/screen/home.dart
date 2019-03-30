@@ -55,7 +55,7 @@ class _HomePageState extends State<HomePage> {
         onPressed: () {
           showSearch(
             context: context,
-            delegate: SearchPage(searchStore),
+            delegate: SearchPage(searchStore, favStore),
           );
         },
       ),

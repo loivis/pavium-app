@@ -1,4 +1,5 @@
 import 'package:mobx/mobx.dart';
+import 'package:prunusavium/model/book.dart';
 import 'package:prunusavium/model/favorite.dart';
 
 part 'favorite.g.dart';
@@ -10,6 +11,9 @@ abstract class _FavoriteStore implements Store {
 
   @observable
   ObservableList<Favorite> favorites = ObservableList<Favorite>();
+
+  @observable
+  bool isFavorite = false;
 
   @observable
   bool loaded = false;
@@ -47,5 +51,31 @@ abstract class _FavoriteStore implements Store {
         "site",
         "title",
         "update"));
+  }
+
+  @action
+  void setFavoriteStatus(Book book) {
+    isFavorite = false;
+    for (var fav in favorites) {
+      if (fav.key == book.key) {
+        isFavorite = true;
+      }
+    }
+  }
+
+  @action
+  void flipFavorite(Book book) {
+    Favorite newf =
+        Favorite(book.author, book.id, book.image, book.site, book.title, "");
+    if (isFavorite) {
+      for (var fav in favorites) {
+        if (fav.key == newf.key) {
+          favorites.remove(fav);
+        }
+      }
+    } else {
+      favorites.add(newf);
+    }
+    isFavorite = !isFavorite;
   }
 }

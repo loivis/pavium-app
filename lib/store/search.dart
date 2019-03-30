@@ -50,14 +50,6 @@ abstract class _SearchStore implements Store {
     print('search on: $query');
 
     books = [];
-
-    var index = history.indexOf(query);
-    if (index > 0) {
-      history.remove(query);
-    }
-    history.insert(0, query);
-    prefs.setStringList("history", history);
-
     try {
       final future = Dio().get("${env.endpoint}/v1/search?keywords=$query");
       searchKeywordsFuture = ObservableFuture(future);
@@ -70,7 +62,20 @@ abstract class _SearchStore implements Store {
     }
 
     _lastQuery = query;
+    updateHistory(query);
 
     print('number of books returned: ${books.length}');
+  }
+
+  void updateHistory(query) {
+    if (history.indexOf(query) > 0) {
+      history.remove(query);
+    }
+    history.insert(0, query);
+
+    // deduplicate
+    history = history.toSet().toList();
+
+    prefs.setStringList("history", history);
   }
 }

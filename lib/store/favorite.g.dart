@@ -30,6 +30,21 @@ mixin _$FavoriteStore on _FavoriteStore, Store {
     _$favoritesAtom.reportChanged();
   }
 
+  final _$isFavoriteAtom = Atom(name: '_FavoriteStore.isFavorite');
+
+  @override
+  bool get isFavorite {
+    _$isFavoriteAtom.reportObserved();
+    return super.isFavorite;
+  }
+
+  @override
+  set isFavorite(bool value) {
+    mainContext.checkIfStateModificationsAreAllowed(_$isFavoriteAtom);
+    super.isFavorite = value;
+    _$isFavoriteAtom.reportChanged();
+  }
+
   final _$loadedAtom = Atom(name: '_FavoriteStore.loaded');
 
   @override
@@ -78,6 +93,26 @@ mixin _$FavoriteStore on _FavoriteStore, Store {
     final _$actionInfo = _$_FavoriteStoreActionController.startAction();
     try {
       return super.loadFavorites();
+    } finally {
+      _$_FavoriteStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void setFavoriteStatus(Book book) {
+    final _$actionInfo = _$_FavoriteStoreActionController.startAction();
+    try {
+      return super.setFavoriteStatus(book);
+    } finally {
+      _$_FavoriteStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void flipFavorite(Book book) {
+    final _$actionInfo = _$_FavoriteStoreActionController.startAction();
+    try {
+      return super.flipFavorite(book);
     } finally {
       _$_FavoriteStoreActionController.endAction(_$actionInfo);
     }

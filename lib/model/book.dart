@@ -4,13 +4,15 @@ part 'book.g.dart';
 
 @JsonSerializable()
 class Book {
-  String author, id, site, title;
+  final String author, id, image, link, site, title;
 
-  String get key => [this.site, this.author, this.title, this.id].join('_');
+  String get key => this.site + this.id;
 
   Book(
     this.author,
     this.id,
+    this.image,
+    this.link,
     this.site,
     this.title,
   );

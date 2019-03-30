@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:prunusavium/screen/book.dart';
+import 'package:prunusavium/store/favorite.dart';
 import 'package:prunusavium/store/search.dart';
 
 class SearchPage extends SearchDelegate {
-  final SearchStore store;
+  final FavoriteStore favStore;
+  final SearchStore searchStore;
 
-  SearchPage(this.store);
+  SearchPage(this.searchStore, this.favStore);
 
   @override
   List<Widget> buildActions(BuildContext context) {
@@ -36,26 +38,26 @@ class SearchPage extends SearchDelegate {
 
   @override
   Widget buildResults(BuildContext context) {
-    store.searchKeywords(query);
+    searchStore.searchKeywords(query);
 
     return Observer(
       builder: (_) {
-        if (!store.hasResults) {
+        if (!searchStore.hasResults) {
           return Container(
             child: LinearProgressIndicator(),
           );
         }
 
-        if (store.books.isEmpty) {
+        if (searchStore.books.isEmpty) {
           return Center(
             child: Text('oops ... nothing found'),
           );
         }
 
         return ListView.builder(
-            itemCount: store.books.length,
+            itemCount: searchStore.books.length,
             itemBuilder: (_, int index) {
-              final book = store.books[index];
+              final book = searchStore.books[index];
               return Card(
                 margin: EdgeInsets.all(5.0),
                 elevation: 5.0,
@@ -64,7 +66,8 @@ class SearchPage extends SearchDelegate {
                   onTap: () {
                     Navigator.of(context).push(
                       MaterialPageRoute(
-                        builder: (BuildContext context) => BookPage(book),
+                        builder: (BuildContext context) =>
+                            BookPage(book, favStore),
                       ),
                     );
                   },
@@ -77,10 +80,10 @@ class SearchPage extends SearchDelegate {
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    store.loadHistory();
+    searchStore.loadHistory();
 
     return ListView.builder(
-      itemCount: store.history.length,
+      itemCount: searchStore.history.length,
       itemBuilder: (BuildContext context, int index) {
         return Row(
           children: <Widget>[
@@ -89,13 +92,13 @@ class SearchPage extends SearchDelegate {
               child: SizedBox(
                 // width: double.infinity,
                 child: Text(
-                  store.history[index],
+                  searchStore.history[index],
                   textAlign: TextAlign.left,
                   style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
                 ),
               ),
               onPressed: () {
-                query = store.history[index];
+                query = searchStore.history[index];
               },
             ),
           ],

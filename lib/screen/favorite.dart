@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:mobx/mobx.dart';
 import 'package:prunusavium/model/favorite.dart';
 import 'package:prunusavium/screen/text.dart';
 import 'package:prunusavium/store/favorite.dart';
@@ -69,8 +68,8 @@ class FavoriteListView extends StatelessWidget {
       CachedNetworkImage leading = CachedNetworkImage(
         imageUrl: fav.image,
         height: 75.0,
-        // placeholder: (ctx, str) => CircularProgressIndicator(),
-        // errorWidget: (ctx, str, obj) => Icon(Icons.error),
+        placeholder: (ctx, str) => CircularProgressIndicator(),
+        errorWidget: (ctx, str, obj) => Icon(Icons.error),
       );
 
       Column subtitle = Column(
