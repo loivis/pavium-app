@@ -27,15 +27,9 @@ class _HomePageState extends State<HomePage> {
   List<Widget> pages = List<Widget>();
   List<String> titles = ["收藏", "排行"];
 
-  @override
-  initState() {
-    super.initState();
-    favStore = FavoriteStore();
-    pages..add(FavoritePage(favStore))..add(RankPage());
-  }
-
   Future asyncInit() async {
     prefs = await SharedPreferences.getInstance();
+    favStore = FavoriteStore(prefs);
     searchStore = SearchStore(widget.env, prefs);
     return prefs;
   }
@@ -76,11 +70,14 @@ class _HomePageState extends State<HomePage> {
     return FutureBuilder(
       future: asyncInit(),
       builder: (BuildContext context, AsyncSnapshot snapshot) {
-        if (!snapshot.hasData) {
-          return Center(
-            child: CircularProgressIndicator(),
-          );
+        if (snapshot.connectionState != ConnectionState.done) {
+          // return Center(
+          //   child: Text("loading ..."),
+          // );
+          return Container();
         }
+
+        pages..add(FavoritePage(favStore))..add(RankPage());
 
         return IndexedStack(
           index: _idx,

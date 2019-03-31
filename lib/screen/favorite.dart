@@ -14,11 +14,6 @@ class FavoritePage extends StatefulWidget {
 }
 
 class _FavoritePageState extends State<FavoritePage> {
-  void initState() {
-    super.initState();
-    widget.store.loadFavorites();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,6 +29,9 @@ class FavoriteListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (!this.store.loaded) {
+      store.loadFavorites();
+    }
     return Container(
       child: Observer(
         builder: (_) {

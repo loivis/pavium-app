@@ -1,13 +1,16 @@
 import 'package:mobx/mobx.dart';
 import 'package:prunusavium/model/book.dart';
 import 'package:prunusavium/model/favorite.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 part 'favorite.g.dart';
 
 class FavoriteStore = _FavoriteStore with _$FavoriteStore;
 
 abstract class _FavoriteStore implements Store {
-  _FavoriteStore();
+  final SharedPreferences prefs;
+
+  _FavoriteStore(this.prefs);
 
   @observable
   ObservableList<Favorite> favorites = ObservableList<Favorite>();
@@ -40,9 +43,8 @@ abstract class _FavoriteStore implements Store {
   }
 
   @action
-  loadFavorites() {
+  void loadFavorites() {
     print("load favorites");
-    loaded = true;
 
     favorites.add(Favorite(
         "author",
@@ -51,6 +53,7 @@ abstract class _FavoriteStore implements Store {
         "site",
         "title",
         "update"));
+    loaded = true;
   }
 
   @action

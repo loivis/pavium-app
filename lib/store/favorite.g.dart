@@ -89,7 +89,7 @@ mixin _$FavoriteStore on _FavoriteStore, Store {
   }
 
   @override
-  dynamic loadFavorites() {
+  void loadFavorites() {
     final _$actionInfo = _$_FavoriteStoreActionController.startAction();
     try {
       return super.loadFavorites();
