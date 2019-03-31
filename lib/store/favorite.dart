@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:mobx/mobx.dart';
 import 'package:prunusavium/model/book.dart';
 import 'package:prunusavium/model/favorite.dart';
@@ -46,13 +48,25 @@ abstract class _FavoriteStore implements Store {
   void loadFavorites() {
     print("load favorites");
 
-    favorites.add(Favorite(
-        "author",
-        "id",
-        "https://lh3.googleusercontent.com/H_6PL2Br4qdh2oLTF4QeqwgWWiPvOpre044cCFbwrA5oepf1uaFsvXOQ1HFr5uK4OYLh=s360-rw",
-        "site",
-        "title",
-        "update"));
+    var favStrings = prefs.getStringList("favorites");
+    // prefs.remove('favorites');
+    if (favStrings == null) {
+      return;
+    }
+
+    for (var fs in favStrings) {
+      Map<String, dynamic> favJson = json.decode(fs);
+      Favorite fav = Favorite.fromJson(favJson);
+      favorites.add(fav);
+    }
+
+    // favorites.add(Favorite(
+    //     "author",
+    //     "id",
+    //     "https://lh3.googleusercontent.com/H_6PL2Br4qdh2oLTF4QeqwgWWiPvOpre044cCFbwrA5oepf1uaFsvXOQ1HFr5uK4OYLh=s360-rw",
+    //     "site",
+    //     "title",
+    //     "update"));
     loaded = true;
   }
 
@@ -79,6 +93,14 @@ abstract class _FavoriteStore implements Store {
     } else {
       favorites.add(newf);
     }
+
+    List<String> favStrings = [];
+    for (var fav in favorites) {
+      favStrings.add(json.encode(fav.toJson()));
+    }
+
+    prefs.setStringList('favorites', favStrings);
+
     isFavorite = !isFavorite;
   }
 }
