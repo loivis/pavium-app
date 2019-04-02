@@ -2,13 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:prunusavium/model/favorite.dart';
 import 'package:prunusavium/screen/text.dart';
+import 'package:prunusavium/store/book.dart';
 import 'package:prunusavium/store/favorite.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 class FavoritePage extends StatefulWidget {
-  final FavoriteStore store;
+  final FavoriteStore favStore;
+  final BookStore bookStore;
 
-  FavoritePage(this.store);
+  FavoritePage(this.favStore, this.bookStore);
 
   _FavoritePageState createState() => _FavoritePageState();
 }
@@ -17,31 +19,33 @@ class _FavoritePageState extends State<FavoritePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: FavoriteListView(widget.store),
+      body: FavoriteListView(widget.favStore, widget.bookStore),
     );
   }
 }
 
 class FavoriteListView extends StatelessWidget {
-  final FavoriteStore store;
+  final FavoriteStore favStore;
+  final BookStore bookStore;
 
-  const FavoriteListView(this.store);
+  const FavoriteListView(this.favStore, this.bookStore);
 
   @override
   Widget build(BuildContext context) {
-    if (!this.store.loaded) {
-      store.loadFavorites();
+    if (!this.favStore.loaded) {
+      favStore.loadFavorites();
     }
+
     return Container(
       child: Observer(
         builder: (_) {
-          if (!this.store.loaded) {
+          if (!this.favStore.loaded) {
             return Center(
               child: Text("loading favorites"),
             );
           }
 
-          if (this.store.favorites.isEmpty) {
+          if (this.favStore.favorites.isEmpty) {
             return Center(
               child: Text("no favorites yet"),
             );
@@ -55,7 +59,7 @@ class FavoriteListView extends StatelessWidget {
 
   Widget _buildFavList() {
     var __itemBuilder = (BuildContext context, int idx) {
-      List<Favorite> favs = this.store.favorites;
+      List<Favorite> favs = this.favStore.favorites;
 
       if (idx.isOdd) {
         return Divider(color: Theme.of(context).backgroundColor);
@@ -95,9 +99,11 @@ class FavoriteListView extends StatelessWidget {
         title: Text(fav.title),
         subtitle: subtitle,
         onTap: () {
+          print(fav.toJson());
           Navigator.of(context).push(
             MaterialPageRoute(
-              builder: (BuildContext context) => TextPage(),
+              builder: (BuildContext context) =>
+                  TextPage(fav, this.favStore, this.bookStore),
             ),
           );
         },
@@ -107,7 +113,7 @@ class FavoriteListView extends StatelessWidget {
 
     return ListView.builder(
       padding: EdgeInsets.symmetric(vertical: 10.0),
-      itemCount: this.store.favorites.length * 2,
+      itemCount: this.favStore.favorites.length * 2,
       itemBuilder: __itemBuilder,
     );
   }

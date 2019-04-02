@@ -8,6 +8,8 @@ class Favorite {
 
   int progress;
 
+  String source;
+
   @JsonKey(defaultValue: '2018-02-03')
   String update;
 
@@ -22,8 +24,12 @@ class Favorite {
     this.update,
   );
 
-  factory Favorite.fromJson(Map<String, dynamic> json) =>
-      _$FavoriteFromJson(json);
+  factory Favorite.fromJson(Map<String, dynamic> json) {
+    Favorite fav = _$FavoriteFromJson(json);
+    fav.progress = 0;
+    fav.source = fav.site;
+    return fav;
+  }
 
   Map<String, dynamic> toJson() => _$FavoriteToJson(this);
 }

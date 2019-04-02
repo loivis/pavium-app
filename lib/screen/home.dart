@@ -4,6 +4,7 @@ import 'package:prunusavium/env.dart';
 import 'package:prunusavium/screen/favorite.dart';
 import 'package:prunusavium/screen/rank.dart';
 import 'package:prunusavium/screen/search.dart';
+import 'package:prunusavium/store/book.dart';
 import 'package:prunusavium/store/favorite.dart';
 import 'package:prunusavium/store/search.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -19,6 +20,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   SharedPreferences prefs;
+  BookStore bookStore;
   FavoriteStore favStore;
   SearchStore searchStore;
 
@@ -29,7 +31,8 @@ class _HomePageState extends State<HomePage> {
 
   Future asyncInit() async {
     prefs = await SharedPreferences.getInstance();
-    favStore = FavoriteStore(prefs);
+    bookStore = BookStore(prefs);
+    favStore = FavoriteStore(widget.env, prefs);
     searchStore = SearchStore(widget.env, prefs);
     return prefs;
   }
@@ -77,7 +80,7 @@ class _HomePageState extends State<HomePage> {
           return Container();
         }
 
-        pages..add(FavoritePage(favStore))..add(RankPage());
+        pages..add(FavoritePage(favStore, bookStore))..add(RankPage());
 
         return IndexedStack(
           index: _idx,

@@ -60,6 +60,21 @@ mixin _$FavoriteStore on _FavoriteStore, Store {
     _$loadedAtom.reportChanged();
   }
 
+  final _$textLoadedAtom = Atom(name: '_FavoriteStore.textLoaded');
+
+  @override
+  bool get textLoaded {
+    _$textLoadedAtom.reportObserved();
+    return super.textLoaded;
+  }
+
+  @override
+  set textLoaded(bool value) {
+    mainContext.checkIfStateModificationsAreAllowed(_$textLoadedAtom);
+    super.textLoaded = value;
+    _$textLoadedAtom.reportChanged();
+  }
+
   final _$fetchFavsFutureAtom = Atom(name: '_FavoriteStore.fetchFavsFuture');
 
   @override
@@ -73,6 +88,13 @@ mixin _$FavoriteStore on _FavoriteStore, Store {
     mainContext.checkIfStateModificationsAreAllowed(_$fetchFavsFutureAtom);
     super.fetchFavsFuture = value;
     _$fetchFavsFutureAtom.reportChanged();
+  }
+
+  final _$loadFavoriteAsyncAction = AsyncAction('loadFavorite');
+
+  @override
+  Future<String> loadFavorite(Favorite fav) {
+    return _$loadFavoriteAsyncAction.run(() => super.loadFavorite(fav));
   }
 
   final _$_FavoriteStoreActionController =
