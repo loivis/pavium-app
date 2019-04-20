@@ -150,7 +150,7 @@ abstract class _FavoriteStore implements Store {
 
   Future loadChapter(Favorite fav, List<Chapter> chapters) async {
     var chapterStrings = prefs.getStringList(fav.key);
-    if (chapterStrings == null) {
+    if (chapterStrings == null || chapterStrings.length == 0) {
       print("no existing chapters found");
       List<String> chapterStrings = [];
       String chapterLink;
@@ -176,7 +176,7 @@ abstract class _FavoriteStore implements Store {
           var link =
               '${env.endpoint}/v1/chapters?site=${fav.site}&link=$chapterLink';
           print(link);
-          var response = await Dio().get("${link}");
+          var response = await Dio().get("$link");
           print("response.data: ${response.data}");
           for (var item in response.data) {
             chapterStrings.add(json.encode(item));
@@ -185,7 +185,9 @@ abstract class _FavoriteStore implements Store {
           print("chapterStrings: $chapterStrings");
           print("chapters: $chapters");
         }
-        prefs.setStringList(fav.key, chapterStrings);
+        if (chapterStrings.length > 0) {
+          prefs.setStringList(fav.key, chapterStrings);
+        }
       } catch (e) {
         print(e);
       }

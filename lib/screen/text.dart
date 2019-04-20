@@ -35,7 +35,7 @@ class _TextPageState extends State<TextPage> {
         }
         return Scaffold(
           body: Center(
-            child: Text(text.substring(0, 100)),
+            child: Text(text.substring(0, 33)),
           ),
         );
       },
