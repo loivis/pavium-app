@@ -6,8 +6,6 @@ part of 'favorite.dart';
 // StoreGenerator
 // **************************************************************************
 
-// ignore_for_file: non_constant_identifier_names, unnecessary_lambdas, prefer_expression_function_bodies
-
 mixin _$FavoriteStore on _FavoriteStore, Store {
   Computed<bool> _$updatedComputed;
 
@@ -25,7 +23,6 @@ mixin _$FavoriteStore on _FavoriteStore, Store {
 
   @override
   set favorites(ObservableList<Favorite> value) {
-    mainContext.checkIfStateModificationsAreAllowed(_$favoritesAtom);
     super.favorites = value;
     _$favoritesAtom.reportChanged();
   }
@@ -40,7 +37,6 @@ mixin _$FavoriteStore on _FavoriteStore, Store {
 
   @override
   set isFavorite(bool value) {
-    mainContext.checkIfStateModificationsAreAllowed(_$isFavoriteAtom);
     super.isFavorite = value;
     _$isFavoriteAtom.reportChanged();
   }
@@ -55,7 +51,6 @@ mixin _$FavoriteStore on _FavoriteStore, Store {
 
   @override
   set loaded(bool value) {
-    mainContext.checkIfStateModificationsAreAllowed(_$loadedAtom);
     super.loaded = value;
     _$loadedAtom.reportChanged();
   }
@@ -70,7 +65,6 @@ mixin _$FavoriteStore on _FavoriteStore, Store {
 
   @override
   set textLoaded(bool value) {
-    mainContext.checkIfStateModificationsAreAllowed(_$textLoadedAtom);
     super.textLoaded = value;
     _$textLoadedAtom.reportChanged();
   }
@@ -85,16 +79,8 @@ mixin _$FavoriteStore on _FavoriteStore, Store {
 
   @override
   set fetchFavsFuture(ObservableFuture<List<Favorite>> value) {
-    mainContext.checkIfStateModificationsAreAllowed(_$fetchFavsFutureAtom);
     super.fetchFavsFuture = value;
     _$fetchFavsFutureAtom.reportChanged();
-  }
-
-  final _$loadFavoriteAsyncAction = AsyncAction('loadFavorite');
-
-  @override
-  Future<String> loadFavorite(Favorite fav) {
-    return _$loadFavoriteAsyncAction.run(() => super.loadFavorite(fav));
   }
 
   final _$_FavoriteStoreActionController =
@@ -102,41 +88,41 @@ mixin _$FavoriteStore on _FavoriteStore, Store {
 
   @override
   dynamic checkFavritesUpdate() {
-    final _$actionInfo = _$_FavoriteStoreActionController.startAction();
+    final _$prevDerivation = _$_FavoriteStoreActionController.startAction();
     try {
       return super.checkFavritesUpdate();
     } finally {
-      _$_FavoriteStoreActionController.endAction(_$actionInfo);
+      _$_FavoriteStoreActionController.endAction(_$prevDerivation);
     }
   }
 
   @override
   void loadFavorites() {
-    final _$actionInfo = _$_FavoriteStoreActionController.startAction();
+    final _$prevDerivation = _$_FavoriteStoreActionController.startAction();
     try {
       return super.loadFavorites();
     } finally {
-      _$_FavoriteStoreActionController.endAction(_$actionInfo);
+      _$_FavoriteStoreActionController.endAction(_$prevDerivation);
     }
   }
 
   @override
   void setFavoriteStatus(Book book) {
-    final _$actionInfo = _$_FavoriteStoreActionController.startAction();
+    final _$prevDerivation = _$_FavoriteStoreActionController.startAction();
     try {
       return super.setFavoriteStatus(book);
     } finally {
-      _$_FavoriteStoreActionController.endAction(_$actionInfo);
+      _$_FavoriteStoreActionController.endAction(_$prevDerivation);
     }
   }
 
   @override
   void flipFavorite(Book book) {
-    final _$actionInfo = _$_FavoriteStoreActionController.startAction();
+    final _$prevDerivation = _$_FavoriteStoreActionController.startAction();
     try {
       return super.flipFavorite(book);
     } finally {
-      _$_FavoriteStoreActionController.endAction(_$actionInfo);
+      _$_FavoriteStoreActionController.endAction(_$prevDerivation);
     }
   }
 }

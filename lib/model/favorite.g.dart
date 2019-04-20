@@ -13,9 +13,9 @@ Favorite _$FavoriteFromJson(Map<String, dynamic> json) {
       json['image'] as String,
       json['site'] as String,
       json['title'] as String,
-      json['update'] as String ?? '2018-02-03')
-    ..progress = json['progress'] as int
-    ..source = json['source'] as String;
+      json['update'] as String ?? '2018-02-03',
+      json['progress'] as int,
+      json['source'] as String);
 }
 
 Map<String, dynamic> _$FavoriteToJson(Favorite instance) => <String, dynamic>{

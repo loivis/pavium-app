@@ -22,6 +22,8 @@ class Favorite {
     this.site,
     this.title,
     this.update,
+    this.progress,
+    this.source,
   );
 
   factory Favorite.fromJson(Map<String, dynamic> json) {

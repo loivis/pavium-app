@@ -82,8 +82,8 @@ abstract class _FavoriteStore implements Store {
 
   @action
   void flipFavorite(Book book) {
-    Favorite newf =
-        Favorite(book.author, book.id, book.image, book.site, book.title, "");
+    Favorite newf = Favorite(book.author, book.id, book.image, book.site,
+        book.title, "", 0, book.site);
 
     if (isFavorite) {
       Favorite toRemove;
@@ -110,7 +110,6 @@ abstract class _FavoriteStore implements Store {
     isFavorite = !isFavorite;
   }
 
-  @action
   Future<String> loadFavorite(Favorite fav) async {
     List<Chapter> chapters = [];
 

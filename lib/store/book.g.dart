@@ -6,8 +6,6 @@ part of 'book.dart';
 // StoreGenerator
 // **************************************************************************
 
-// ignore_for_file: non_constant_identifier_names, unnecessary_lambdas, prefer_expression_function_bodies
-
 mixin _$BookStore on _BookStore, Store {
   final _$booksAtom = Atom(name: '_BookStore.books');
 
@@ -19,7 +17,6 @@ mixin _$BookStore on _BookStore, Store {
 
   @override
   set books(ObservableList<Book> value) {
-    mainContext.checkIfStateModificationsAreAllowed(_$booksAtom);
     super.books = value;
     _$booksAtom.reportChanged();
   }
@@ -34,7 +31,6 @@ mixin _$BookStore on _BookStore, Store {
 
   @override
   set loaded(bool value) {
-    mainContext.checkIfStateModificationsAreAllowed(_$loadedAtom);
     super.loaded = value;
     _$loadedAtom.reportChanged();
   }
@@ -49,7 +45,6 @@ mixin _$BookStore on _BookStore, Store {
 
   @override
   set fetchFavsFuture(ObservableFuture<List<Book>> value) {
-    mainContext.checkIfStateModificationsAreAllowed(_$fetchFavsFutureAtom);
     super.fetchFavsFuture = value;
     _$fetchFavsFutureAtom.reportChanged();
   }
@@ -58,21 +53,21 @@ mixin _$BookStore on _BookStore, Store {
 
   @override
   void loadBook(Book book) {
-    final _$actionInfo = _$_BookStoreActionController.startAction();
+    final _$prevDerivation = _$_BookStoreActionController.startAction();
     try {
       return super.loadBook(book);
     } finally {
-      _$_BookStoreActionController.endAction(_$actionInfo);
+      _$_BookStoreActionController.endAction(_$prevDerivation);
     }
   }
 
   @override
   void setBookStatus(Book book) {
-    final _$actionInfo = _$_BookStoreActionController.startAction();
+    final _$prevDerivation = _$_BookStoreActionController.startAction();
     try {
       return super.setBookStatus(book);
     } finally {
-      _$_BookStoreActionController.endAction(_$actionInfo);
+      _$_BookStoreActionController.endAction(_$prevDerivation);
     }
   }
 }

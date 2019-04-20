@@ -41,7 +41,6 @@ abstract class _SearchStore implements Store {
     history = prefs.getStringList("history") ?? [];
   }
 
-  @action
   Future searchKeywords(query) async {
     if (query == "" || _lastQuery == query) {
       return;
