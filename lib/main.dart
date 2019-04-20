@@ -2,8 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:prunusavium/config/debug.dart';
 import 'package:prunusavium/env.dart';
 import 'package:prunusavium/screen/home.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-void main() => Debug();
+SharedPreferences prefs;
+
+void main() async {
+  prefs = await SharedPreferences.getInstance();
+  print("prefs loaded");
+  Debug();
+}
 
 class MyApp extends StatelessWidget {
   final Env env;
@@ -17,7 +24,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Pavium',
       theme: _themeData(),
-      home: HomePage(env),
+      home: HomePage(env, prefs),
     );
   }
 

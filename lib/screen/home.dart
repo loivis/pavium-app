@@ -11,15 +11,15 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class HomePage extends StatefulWidget {
   final Env env;
+  final SharedPreferences prefs;
 
-  HomePage(this.env);
+  HomePage(this.env, this.prefs);
 
   @override
   _HomePageState createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
-  SharedPreferences prefs;
   BookStore bookStore;
   FavoriteStore favStore;
   SearchStore searchStore;
@@ -29,12 +29,15 @@ class _HomePageState extends State<HomePage> {
   List<Widget> pages = List<Widget>();
   List<String> titles = ["收藏", "排行"];
 
-  Future asyncInit() async {
-    prefs = await SharedPreferences.getInstance();
-    bookStore = BookStore(prefs);
-    favStore = FavoriteStore(widget.env, prefs);
-    searchStore = SearchStore(widget.env, prefs);
-    return prefs;
+  @override
+  void initState() {
+    super.initState();
+
+    bookStore = BookStore(widget.prefs);
+    favStore = FavoriteStore(widget.env, widget.prefs);
+    searchStore = SearchStore(widget.env, widget.prefs);
+
+    pages..add(FavoritePage(favStore, bookStore))..add(RankPage());
   }
 
   @override
@@ -70,23 +73,9 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _buildBody() {
-    return FutureBuilder(
-      future: asyncInit(),
-      builder: (BuildContext context, AsyncSnapshot snapshot) {
-        if (snapshot.connectionState != ConnectionState.done) {
-          // return Center(
-          //   child: Text("loading ..."),
-          // );
-          return Container();
-        }
-
-        pages..add(FavoritePage(favStore, bookStore))..add(RankPage());
-
-        return IndexedStack(
-          index: _idx,
-          children: pages,
-        );
-      },
+    return IndexedStack(
+      index: _idx,
+      children: pages,
     );
   }
 
