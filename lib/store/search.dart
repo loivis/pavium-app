@@ -13,6 +13,7 @@ abstract class _SearchStore implements Store {
   final SharedPreferences prefs;
 
   String _lastQuery;
+  bool _searching = false;
 
   _SearchStore(this.env, this.prefs);
 
@@ -42,10 +43,20 @@ abstract class _SearchStore implements Store {
   }
 
   Future searchKeywords(query) async {
-    if (query == "" || _lastQuery == query) {
+    if (query == "") {
+      print("empty search query");
+      return;
+    }
+    if (_lastQuery == query) {
+      print("the same query as last");
+      return;
+    }
+    if (_searching) {
+      print("skip duplicated search call");
       return;
     }
 
+    _searching = true;
     print('search on: $query');
 
     books = [];
@@ -61,6 +72,7 @@ abstract class _SearchStore implements Store {
     }
 
     _lastQuery = query;
+    _searching = false;
     updateHistory(query);
 
     print('number of books returned: ${books.length}');
