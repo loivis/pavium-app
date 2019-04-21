@@ -61,8 +61,7 @@ class _BookPageState extends State<BookPage> {
           Row(
             children: <Widget>[
               CachedNetworkImage(
-                imageUrl:
-                    "https://lh3.googleusercontent.com/H_6PL2Br4qdh2oLTF4QeqwgWWiPvOpre044cCFbwrA5oepf1uaFsvXOQ1HFr5uK4OYLh=s360-rw",
+                imageUrl: widget.book.image,
                 height: 100.0,
                 placeholder: (ctx, str) => CircularProgressIndicator(),
                 errorWidget: (ctx, str, obj) => Icon(Icons.error),
