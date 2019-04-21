@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:prunusavium/model/favorite.dart';
-import 'package:prunusavium/screen/text.dart';
-import 'package:prunusavium/store/book.dart';
-import 'package:prunusavium/store/favorite.dart';
+import 'package:pavium/model/favorite.dart';
+import 'package:pavium/screen/text.dart';
+import 'package:pavium/store/book.dart';
+import 'package:pavium/store/favorite.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 class FavoritePage extends StatefulWidget {

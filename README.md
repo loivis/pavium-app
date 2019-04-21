@@ -1,4 +1,4 @@
-# prunusavium
+# pavium
 
 mobile app with Flutter
 

@@ -2,10 +2,10 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:mobx/mobx.dart';
-import 'package:prunusavium/env.dart';
-import 'package:prunusavium/model/book.dart';
-import 'package:prunusavium/model/chapter.dart';
-import 'package:prunusavium/model/favorite.dart';
+import 'package:pavium/env.dart';
+import 'package:pavium/model/book.dart';
+import 'package:pavium/model/chapter.dart';
+import 'package:pavium/model/favorite.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 part 'favorite.g.dart';
@@ -135,9 +135,9 @@ abstract class _FavoriteStore implements Store {
     if (text == null) {
       print("no existing text found");
       print(
-          "text link: ${env.endpoint}/v1/text?site=${fav.source}&link=${chapters[fav.progress].link}");
+          "text link: ${env.endpoint}/text?site=${fav.source}&link=${chapters[fav.progress].link}");
       final response = await Dio().get(
-          "${env.endpoint}/v1/text?site=${fav.source}&link=${chapters[fav.progress].link}");
+          "${env.endpoint}/text?site=${fav.source}&link=${chapters[fav.progress].link}");
       print("${response.data}");
       text = response.data;
       prefs.setString("${fav.key}-${fav.progress}", text);
@@ -156,7 +156,7 @@ abstract class _FavoriteStore implements Store {
 
       try {
         var response = await Dio().get(
-            "${env.endpoint}/v1/search?author=${fav.author}&title=${fav.title}");
+            "${env.endpoint}/search?author=${fav.author}&title=${fav.title}");
         print(response.data);
         for (var item in response.data) {
           Book book = Book.fromJson(item);
@@ -173,7 +173,7 @@ abstract class _FavoriteStore implements Store {
       try {
         if (chapterLink != "") {
           var link =
-              '${env.endpoint}/v1/chapters?site=${fav.site}&link=$chapterLink';
+              '${env.endpoint}/chapters?site=${fav.site}&link=$chapterLink';
           print(link);
           var response = await Dio().get("$link");
           print("response.data: ${response.data}");

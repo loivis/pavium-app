@@ -1,8 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:prunusavium/model/book.dart';
-import 'package:prunusavium/store/favorite.dart';
+import 'package:pavium/model/book.dart';
+import 'package:pavium/store/favorite.dart';
 
 class BookPage extends StatefulWidget {
   final Book book;

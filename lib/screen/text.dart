@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:prunusavium/model/favorite.dart';
-import 'package:prunusavium/store/book.dart';
-import 'package:prunusavium/store/favorite.dart';
+import 'package:pavium/model/favorite.dart';
+import 'package:pavium/store/book.dart';
+import 'package:pavium/store/favorite.dart';
 
 class TextPage extends StatefulWidget {
   final Favorite favorite;

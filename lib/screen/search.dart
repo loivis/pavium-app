@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:prunusavium/screen/book.dart';
-import 'package:prunusavium/store/favorite.dart';
-import 'package:prunusavium/store/search.dart';
+import 'package:pavium/screen/book.dart';
+import 'package:pavium/store/favorite.dart';
+import 'package:pavium/store/search.dart';
 
 class SearchPage extends SearchDelegate {
   final FavoriteStore favStore;

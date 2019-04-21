@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:mobx/mobx.dart';
-import 'package:prunusavium/model/book.dart';
+import 'package:pavium/model/book.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 part 'book.g.dart';

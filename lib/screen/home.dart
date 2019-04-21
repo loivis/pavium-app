@@ -1,12 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:prunusavium/env.dart';
-import 'package:prunusavium/screen/favorite.dart';
-import 'package:prunusavium/screen/rank.dart';
-import 'package:prunusavium/screen/search.dart';
-import 'package:prunusavium/store/book.dart';
-import 'package:prunusavium/store/favorite.dart';
-import 'package:prunusavium/store/search.dart';
+import 'package:pavium/env.dart';
+import 'package:pavium/screen/favorite.dart';
+import 'package:pavium/screen/rank.dart';
+import 'package:pavium/screen/search.dart';
+import 'package:pavium/store/book.dart';
+import 'package:pavium/store/favorite.dart';
+import 'package:pavium/store/search.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class HomePage extends StatefulWidget {

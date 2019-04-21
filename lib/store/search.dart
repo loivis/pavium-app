@@ -1,6 +1,6 @@
 import 'package:mobx/mobx.dart';
-import 'package:prunusavium/env.dart';
-import 'package:prunusavium/model/book.dart';
+import 'package:pavium/env.dart';
+import 'package:pavium/model/book.dart';
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -50,7 +50,7 @@ abstract class _SearchStore implements Store {
 
     books = [];
     try {
-      final future = Dio().get("${env.endpoint}/v1/search?keywords=$query");
+      final future = Dio().get("${env.endpoint}/search?keywords=$query");
       searchKeywordsFuture = ObservableFuture(future);
       final response = await future;
       for (var item in response.data) {

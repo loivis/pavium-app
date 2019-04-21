@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:prunusavium/config/debug.dart';
-import 'package:prunusavium/env.dart';
-import 'package:prunusavium/screen/home.dart';
+import 'package:pavium/config/debug.dart';
+import 'package:pavium/env.dart';
+import 'package:pavium/screen/home.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 SharedPreferences prefs;

@@ -1,4 +1,4 @@
-import 'package:prunusavium/env.dart';
+import 'package:pavium/env.dart';
 
 void main() => Prod();
 
