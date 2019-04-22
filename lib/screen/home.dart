@@ -7,13 +7,11 @@ import 'package:pavium/screen/search.dart';
 import 'package:pavium/store/book.dart';
 import 'package:pavium/store/favorite.dart';
 import 'package:pavium/store/search.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class HomePage extends StatefulWidget {
   final Env env;
-  final SharedPreferences prefs;
 
-  HomePage(this.env, this.prefs);
+  HomePage(this.env);
 
   @override
   _HomePageState createState() => _HomePageState();
@@ -33,9 +31,9 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
 
-    bookStore = BookStore(widget.prefs);
-    favStore = FavoriteStore(widget.env, widget.prefs);
-    searchStore = SearchStore(widget.env, widget.prefs);
+    bookStore = BookStore();
+    favStore = FavoriteStore(widget.env);
+    searchStore = SearchStore(widget.env);
 
     pages..add(FavoritePage(favStore, bookStore))..add(RankPage());
   }
