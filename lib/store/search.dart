@@ -2,7 +2,7 @@ import 'package:mobx/mobx.dart';
 import 'package:pavium/env.dart';
 import 'package:pavium/model/book.dart';
 import 'package:dio/dio.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:pavium/util/prefs.dart';
 
 part 'search.g.dart';
 
@@ -10,12 +10,11 @@ class SearchStore = _SearchStore with _$SearchStore;
 
 abstract class _SearchStore implements Store {
   final Env env;
-  final SharedPreferences prefs;
 
   String _lastQuery;
   bool _searching = false;
 
-  _SearchStore(this.env, this.prefs);
+  _SearchStore(this.env);
 
   @observable
   List<String> history = [];
@@ -39,7 +38,7 @@ abstract class _SearchStore implements Store {
 
   @action
   void loadHistory() {
-    history = prefs.getStringList("history") ?? [];
+    history = Prefs.getStringList("history") ?? [];
   }
 
   @action
@@ -93,6 +92,6 @@ abstract class _SearchStore implements Store {
     // deduplicate
     history = history.toSet().toList();
 
-    prefs.setStringList("history", history);
+    Prefs.setStringList("history", history);
   }
 }

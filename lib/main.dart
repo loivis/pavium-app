@@ -3,14 +3,8 @@ import 'package:pavium/config/debug.dart';
 import 'package:pavium/env.dart';
 import 'package:pavium/screen/home.dart';
 import 'package:pavium/util/prefs.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
-SharedPreferences prefs;
 
 void main() async {
-  prefs = await SharedPreferences.getInstance();
-  print("prefs loaded");
-
   await Prefs.init();
 
   Debug();
@@ -28,7 +22,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Pavium',
       theme: _themeData(),
-      home: HomePage(env, prefs),
+      home: HomePage(env),
     );
   }
 

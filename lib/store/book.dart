@@ -1,18 +1,13 @@
 import 'dart:convert';
-
 import 'package:mobx/mobx.dart';
 import 'package:pavium/model/book.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:pavium/util/prefs.dart';
 
 part 'book.g.dart';
 
 class BookStore = _BookStore with _$BookStore;
 
 abstract class _BookStore implements Store {
-  final SharedPreferences prefs;
-
-  _BookStore(this.prefs);
-
   @observable
   ObservableList<Book> books = ObservableList<Book>();
 
@@ -26,8 +21,8 @@ abstract class _BookStore implements Store {
   void loadBook(Book book) {
     print("load book");
 
-    var favStrings = prefs.getStringList("books");
-    // prefs.remove('books');
+    var favStrings = Prefs.getStringList("books");
+    // Prefs.remove('books');
     if (favStrings == null) {
       return;
     }

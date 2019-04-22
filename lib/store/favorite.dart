@@ -1,12 +1,11 @@
 import 'dart:convert';
-
 import 'package:dio/dio.dart';
 import 'package:mobx/mobx.dart';
 import 'package:pavium/env.dart';
 import 'package:pavium/model/book.dart';
 import 'package:pavium/model/chapter.dart';
 import 'package:pavium/model/favorite.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:pavium/util/prefs.dart';
 
 part 'favorite.g.dart';
 
@@ -14,9 +13,8 @@ class FavoriteStore = _FavoriteStore with _$FavoriteStore;
 
 abstract class _FavoriteStore implements Store {
   final Env env;
-  final SharedPreferences prefs;
 
-  _FavoriteStore(this.env, this.prefs);
+  _FavoriteStore(this.env);
 
   @observable
   ObservableList<Favorite> favorites = ObservableList<Favorite>();
@@ -50,7 +48,7 @@ abstract class _FavoriteStore implements Store {
     print("load favorites");
     loaded = false;
 
-    var favStrings = prefs.getStringList("favorites");
+    var favStrings = Prefs.getStringList("favorites");
     if (favStrings == null) {
       loaded = true;
       return;
@@ -105,7 +103,7 @@ abstract class _FavoriteStore implements Store {
     print("favStrings: $favStrings");
     print("favStrings.length: ${favStrings.length}");
 
-    prefs.setStringList('favorites', favStrings);
+    Prefs.setStringList('favorites', favStrings);
 
     isFavorite = !isFavorite;
   }
@@ -130,7 +128,7 @@ abstract class _FavoriteStore implements Store {
     if (fav.progress >= chapters.length && fav.progress > 0) {
       fav.progress = chapters.length - 1;
     }
-    String text = prefs.getString("${fav.key}-${fav.progress}");
+    String text = Prefs.getString("${fav.key}-${fav.progress}");
 
     if (text == null) {
       print("no existing text found");
@@ -140,7 +138,7 @@ abstract class _FavoriteStore implements Store {
           "${env.endpoint}/text?site=${fav.source}&link=${chapters[fav.progress].link}");
       print("${response.data}");
       text = response.data;
-      prefs.setString("${fav.key}-${fav.progress}", text);
+      Prefs.setString("${fav.key}-${fav.progress}", text);
     }
 
     print("load existing text");
@@ -148,7 +146,7 @@ abstract class _FavoriteStore implements Store {
   }
 
   Future loadChapter(Favorite fav, List<Chapter> chapters) async {
-    var chapterStrings = prefs.getStringList(fav.key);
+    var chapterStrings = Prefs.getStringList(fav.key);
     if (chapterStrings == null || chapterStrings.length == 0) {
       print("no existing chapters found");
       List<String> chapterStrings = [];
@@ -185,7 +183,7 @@ abstract class _FavoriteStore implements Store {
           print("chapters: $chapters");
         }
         if (chapterStrings.length > 0) {
-          prefs.setStringList(fav.key, chapterStrings);
+          Prefs.setStringList(fav.key, chapterStrings);
         }
       } catch (e) {
         print(e);
