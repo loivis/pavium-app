@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pavium/config/debug.dart';
 import 'package:pavium/env.dart';
 import 'package:pavium/screen/home.dart';
+import 'package:pavium/util/prefs.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 SharedPreferences prefs;
@@ -9,6 +10,9 @@ SharedPreferences prefs;
 void main() async {
   prefs = await SharedPreferences.getInstance();
   print("prefs loaded");
+
+  await Prefs.init();
+
   Debug();
 }
 
