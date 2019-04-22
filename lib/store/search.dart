@@ -42,6 +42,11 @@ abstract class _SearchStore implements Store {
     history = prefs.getStringList("history") ?? [];
   }
 
+  @action
+  void abort() {
+    _searching = false;
+  }
+
   Future searchKeywords(query) async {
     if (query == "") {
       print("empty search query");
@@ -68,6 +73,7 @@ abstract class _SearchStore implements Store {
         books.add(Book.fromJson(item));
       }
     } catch (e) {
+      _searching = false;
       print(e);
     }
 

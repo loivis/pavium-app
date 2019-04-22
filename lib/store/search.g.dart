@@ -53,4 +53,14 @@ mixin _$SearchStore on _SearchStore, Store {
       _$_SearchStoreActionController.endAction(_$prevDerivation);
     }
   }
+
+  @override
+  void abort() {
+    final _$prevDerivation = _$_SearchStoreActionController.startAction();
+    try {
+      return super.abort();
+    } finally {
+      _$_SearchStoreActionController.endAction(_$prevDerivation);
+    }
+  }
 }

@@ -17,6 +17,7 @@ class SearchPage extends SearchDelegate {
         icon: Icon(Icons.clear),
         onPressed: () {
           query = '';
+          searchStore.abort();
         },
       ),
     ];
