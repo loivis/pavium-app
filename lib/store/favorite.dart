@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:mobx/mobx.dart';
-import 'package:pavium/env.dart';
+import 'package:pavium/config.dart';
 import 'package:pavium/model/book.dart';
 import 'package:pavium/model/chapter.dart';
 import 'package:pavium/model/favorite.dart';
@@ -12,9 +12,9 @@ part 'favorite.g.dart';
 class FavoriteStore = _FavoriteStore with _$FavoriteStore;
 
 abstract class _FavoriteStore implements Store {
-  final Env env;
+  Config config = Config.singleton;
 
-  _FavoriteStore(this.env);
+  _FavoriteStore();
 
   @observable
   ObservableList<Favorite> favorites = ObservableList<Favorite>();
@@ -133,9 +133,9 @@ abstract class _FavoriteStore implements Store {
     if (text == null) {
       print("no existing text found");
       print(
-          "text link: ${env.endpoint}/text?site=${fav.source}&link=${chapters[fav.progress].link}");
+          "text link: ${config.endpoint}/text?site=${fav.source}&link=${chapters[fav.progress].link}");
       final response = await Dio().get(
-          "${env.endpoint}/text?site=${fav.source}&link=${chapters[fav.progress].link}");
+          "${config.endpoint}/text?site=${fav.source}&link=${chapters[fav.progress].link}");
       print("${response.data}");
       text = response.data;
       Prefs.setString("${fav.key}-${fav.progress}", text);
@@ -154,7 +154,7 @@ abstract class _FavoriteStore implements Store {
 
       try {
         var response = await Dio().get(
-            "${env.endpoint}/search?author=${fav.author}&title=${fav.title}");
+            "${config.endpoint}/search?author=${fav.author}&title=${fav.title}");
         print(response.data);
         for (var item in response.data) {
           Book book = Book.fromJson(item);
@@ -171,7 +171,7 @@ abstract class _FavoriteStore implements Store {
       try {
         if (chapterLink != "") {
           var link =
-              '${env.endpoint}/chapters?site=${fav.site}&link=$chapterLink';
+              '${config.endpoint}/chapters?site=${fav.site}&link=$chapterLink';
           print(link);
           var response = await Dio().get("$link");
           print("response.data: ${response.data}");

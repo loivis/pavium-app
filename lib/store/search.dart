@@ -1,5 +1,5 @@
 import 'package:mobx/mobx.dart';
-import 'package:pavium/env.dart';
+import 'package:pavium/config.dart';
 import 'package:pavium/model/book.dart';
 import 'package:dio/dio.dart';
 import 'package:pavium/util/prefs.dart';
@@ -9,12 +9,13 @@ part 'search.g.dart';
 class SearchStore = _SearchStore with _$SearchStore;
 
 abstract class _SearchStore implements Store {
-  final Env env;
+  Config config = Config.singleton;
 
   String _lastQuery;
+
   bool _searching = false;
 
-  _SearchStore(this.env);
+  _SearchStore();
 
   @observable
   List<String> history = [];
@@ -65,7 +66,7 @@ abstract class _SearchStore implements Store {
 
     books = [];
     try {
-      final future = Dio().get("${env.endpoint}/search?keywords=$query");
+      final future = Dio().get("${config.endpoint}/search?keywords=$query");
       searchKeywordsFuture = ObservableFuture(future);
       final response = await future;
       for (var item in response.data) {

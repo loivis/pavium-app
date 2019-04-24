@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:pavium/env.dart';
 import 'package:pavium/screen/favorite.dart';
 import 'package:pavium/screen/rank.dart';
 import 'package:pavium/screen/search.dart';
@@ -9,9 +8,7 @@ import 'package:pavium/store/favorite.dart';
 import 'package:pavium/store/search.dart';
 
 class HomePage extends StatefulWidget {
-  final Env env;
-
-  HomePage(this.env);
+  HomePage();
 
   @override
   _HomePageState createState() => _HomePageState();
@@ -32,8 +29,8 @@ class _HomePageState extends State<HomePage> {
     super.initState();
 
     bookStore = BookStore();
-    favStore = FavoriteStore(widget.env);
-    searchStore = SearchStore(widget.env);
+    favStore = FavoriteStore();
+    searchStore = SearchStore();
 
     pages..add(FavoritePage(favStore, bookStore))..add(RankPage());
   }
